@@ -11,6 +11,11 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -23,10 +28,12 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:20.0.0'
 
+    compile 'com.google.android.gms:play-services:6.5.87'
+
     compile 'org.twitter4j:twitter4j-core:4.0.2'
+    compile 'org.twitter4j:twitter4j-stream:4.0.2'
 
     compile 'org.roboguice:roboguice:3.0.1'
     provided 'org.roboguice:roboblender:3.0'
-
 
 }
