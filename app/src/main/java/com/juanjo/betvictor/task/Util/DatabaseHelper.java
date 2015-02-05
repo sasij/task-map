@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 
+import com.google.inject.Inject;
 import com.juanjo.betvictor.task.ddbb.TweetDDBB;
 import com.juanjo.betvictor.task.models.Tweet;
 
@@ -23,13 +24,17 @@ import java.util.List;
  */
 public class DatabaseHelper {
 
+    @Inject
+    TweetDDBB tweetDDBB;
+
     private SQLiteDatabase database;
-    private TweetDDBB tweetDDBB;
     private String[] allColumns = {TweetDDBB.COLUMN_ID,
             TweetDDBB.COLUMN_LATITUDE, TweetDDBB.COLUMN_LONGITUDE};
 
+
+    @Inject
     public DatabaseHelper(Context context) {
-        tweetDDBB = new TweetDDBB(context);
+//        tweetDDBB = new TweetDDBB(context);
     }
 
     public void open() throws SQLException {
@@ -40,7 +45,7 @@ public class DatabaseHelper {
         tweetDDBB.close();
     }
 
-    public long addTweet(Tweet tweet) {
+    public synchronized long addTweet(Tweet tweet) {
         ContentValues values = new ContentValues();
         values.put(TweetDDBB.COLUMN_ID, tweet.getId());
         values.put(TweetDDBB.COLUMN_LATITUDE, tweet.getLatitude());
@@ -52,11 +57,15 @@ public class DatabaseHelper {
         return id;
     }
 
-    public void deleteTweet(Tweet tweet) {
+    public synchronized void deleteTweet(Tweet tweet) {
         double id = tweet.getId();
         System.out.println("Tweet deleted with id: " + id);
         database.delete(TweetDDBB.TABLE_TWEETS, TweetDDBB.COLUMN_ID
                 + " = " + id, null);
+    }
+
+    public void removeAllTweets() {
+        database.delete(TweetDDBB.TABLE_TWEETS, null, null);
     }
 
     public List<Tweet> getAllTweets() {

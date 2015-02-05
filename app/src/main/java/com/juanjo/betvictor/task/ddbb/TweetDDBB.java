@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.google.inject.Inject;
+
 /**
  * Created by juanjo on 4/2/15.
  */
@@ -26,6 +28,7 @@ public class TweetDDBB extends SQLiteOpenHelper {
             COLUMN_LATITUDE + " double not null, " +
             COLUMN_LONGITUDE + " double not null );";
 
+    @Inject
     public TweetDDBB(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }

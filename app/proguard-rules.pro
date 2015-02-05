@@ -33,3 +33,10 @@
 -keepnames class * implements android.os.Parcelable {
     public static final ** CREATOR;
 }
+
+##Otto
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @com.squareup.otto.Subscribe public *;
+    @com.squareup.otto.Produce public *;
+}
