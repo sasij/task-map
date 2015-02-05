@@ -11,19 +11,19 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.inject.Inject;
 import com.juanjo.betvictor.task.Interfaces.IMainActivity;
+import com.juanjo.betvictor.task.Interfaces.IMainActivityPresenter;
 import com.juanjo.betvictor.task.R;
 import com.juanjo.betvictor.task.models.Tweet;
-import com.juanjo.betvictor.task.presenters.MainActivityPresenter;
 
 import roboguice.activity.RoboFragmentActivity;
 
 public class MainActivity extends RoboFragmentActivity implements
-        IMainActivity, GoogleMap.OnMapLoadedCallback {
+        IMainActivity {
 
     final static int LIFESPAN = 5000;
 
     @Inject
-    MainActivityPresenter presenter;
+    IMainActivityPresenter presenter;
 
     GoogleMap map;
 
@@ -50,12 +50,6 @@ public class MainActivity extends RoboFragmentActivity implements
     public void loadMap() {
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
                 .getMap();
-        map.setOnMapLoadedCallback(this);
-    }
-
-    @Override
-    public void onMapLoaded() {
-        System.out.println("=> map loaded");
     }
 
     @Override

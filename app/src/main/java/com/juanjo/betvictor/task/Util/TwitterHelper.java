@@ -20,5 +20,4 @@ public class TwitterHelper {
                 .setOAuthAccessTokenSecret(secret);
         return configurationBuilder;
     }
-
 }

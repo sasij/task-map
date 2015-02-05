@@ -15,7 +15,6 @@ import com.juanjo.betvictor.task.events.InternetConnectionChangedEvent;
 import com.juanjo.betvictor.task.models.Tweet;
 import com.squareup.otto.Subscribe;
 
-import java.io.IOException;
 import java.util.List;
 
 import roboguice.inject.InjectResource;
@@ -31,6 +30,7 @@ public class MainActivityPresenter implements IMainActivityPresenter {
     Context context;
     @Inject
     DatabaseHelper databaseHelper;
+
     @InjectResource(R.string.with_connection)
     String withConnection;
     @InjectResource(R.string.without_connection)
@@ -61,22 +61,26 @@ public class MainActivityPresenter implements IMainActivityPresenter {
 
     @Override
     public void init() {
-        if (connectionHelper.isConnected(context) && !taskIsRunning) {
+        if (canInitTheTask()) {
             view.showMessage(withConnection);
             view.cleanMap();
-            databaseHelper.removeAllTweets();
-            startStreamTask();
+            databaseHelper.removeAllTweetsFromDatabase();
+            startStreamTask(new StreamTweetTask());
         } else {
             view.showMessage(withoutConnection);
-            List<Tweet> tweets = databaseHelper.getAllTweets();
+            List<Tweet> tweets = databaseHelper.getAllTweetsFromDatabase();
             for (Tweet tweet : tweets)
                 view.addPinToMap(tweet);
         }
     }
 
+    public boolean canInitTheTask() {
+        return connectionHelper.isConnected(context) && !taskIsRunning;
+    }
+
     @Override
-    public void startStreamTask() {
-        streamTweetTask = new StreamTweetTask();
+    public void startStreamTask(StreamTweetTask streamTask) {
+        streamTweetTask = streamTask;
         streamTweetTask.setListener(this);
         taskIsRunning = true;
         streamTweetTask.execute();
@@ -89,11 +93,11 @@ public class MainActivityPresenter implements IMainActivityPresenter {
 
     @Override
     public void onPause() {
-        stopStreamTask();
+        stopStreamTask(streamTweetTask);
     }
 
     @Override
-    public void stopStreamTask() {
+    public void stopStreamTask(StreamTweetTask streamTweetTask) {
         if (streamTweetTask != null) {
             taskIsRunning = false;
             streamTweetTask.stopStream();
@@ -106,13 +110,6 @@ public class MainActivityPresenter implements IMainActivityPresenter {
     public void onStop() {
         databaseHelper.close();
         TweetApplication.getEventBus().unregister(this);
-
-        //TODO remove
-        try {
-            DatabaseHelper.backupDatabase();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -121,7 +118,7 @@ public class MainActivityPresenter implements IMainActivityPresenter {
             @Override
             public void run() {
                 if (taskIsRunning)
-                    databaseHelper.addTweet(tweet);
+                    databaseHelper.addTweetToDatabase(tweet);
             }
         }).start();
     }
@@ -132,7 +129,7 @@ public class MainActivityPresenter implements IMainActivityPresenter {
             @Override
             public void run() {
                 if (canRemoveTweet())
-                    databaseHelper.deleteTweet(tweet);
+                    databaseHelper.deleteTweetFromDatabase(tweet);
             }
         }).start();
     }
@@ -143,7 +140,7 @@ public class MainActivityPresenter implements IMainActivityPresenter {
             marker.remove();
     }
 
-    private boolean canRemoveTweet() {
+    public boolean canRemoveTweet() {
         return taskIsRunning && connectionHelper.isConnected(context);
     }
 
@@ -157,6 +154,6 @@ public class MainActivityPresenter implements IMainActivityPresenter {
         if (event.withInternetConnection())
             init();
         else
-            stopStreamTask();
+            stopStreamTask(streamTweetTask);
     }
 }

@@ -1,6 +1,7 @@
 package com.juanjo.betvictor.task.Interfaces;
 
 import com.google.android.gms.maps.model.Marker;
+import com.juanjo.betvictor.task.Task.StreamTweetTask;
 import com.juanjo.betvictor.task.models.Tweet;
 
 /**
@@ -20,9 +21,9 @@ public interface IMainActivityPresenter {
 
     public void init();
 
-    public void startStreamTask();
+    public void startStreamTask(StreamTweetTask task);
 
-    public void stopStreamTask();
+    public void stopStreamTask(StreamTweetTask task);
 
     public void showPinOnMap(Tweet tweet);
 
