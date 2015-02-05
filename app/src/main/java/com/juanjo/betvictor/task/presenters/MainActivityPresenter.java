@@ -7,12 +7,12 @@ import com.google.inject.Inject;
 import com.juanjo.betvictor.task.Interfaces.IMainActivity;
 import com.juanjo.betvictor.task.Interfaces.IMainActivityPresenter;
 import com.juanjo.betvictor.task.R;
-import com.juanjo.betvictor.task.Task.StreamTweetTask;
+import com.juanjo.betvictor.task.tasks.StreamTweetTask;
 import com.juanjo.betvictor.task.TweetApplication;
-import com.juanjo.betvictor.task.Util.ConnectionHelper;
-import com.juanjo.betvictor.task.Util.DatabaseHelper;
-import com.juanjo.betvictor.task.events.InternetConnectionChangedEvent;
+import com.juanjo.betvictor.task.helpers.ConnectionHelper;
+import com.juanjo.betvictor.task.helpers.DatabaseHelper;
 import com.juanjo.betvictor.task.models.Tweet;
+import com.juanjo.betvictor.task.models.events.InternetConnectionChangedEvent;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;
@@ -56,11 +56,11 @@ public class MainActivityPresenter implements IMainActivityPresenter {
         databaseHelper.open();
         taskIsRunning = false;
         view.loadMap();
-        init();
+        initProcess();
     }
 
     @Override
-    public void init() {
+    public void initProcess() {
         if (canInitTheTask()) {
             view.showMessage(withConnection);
             view.cleanMap();
@@ -152,7 +152,7 @@ public class MainActivityPresenter implements IMainActivityPresenter {
     public void onConnectionEvent(InternetConnectionChangedEvent event) {
 
         if (event.withInternetConnection())
-            init();
+            initProcess();
         else
             stopStreamTask(streamTweetTask);
     }

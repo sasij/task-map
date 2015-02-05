@@ -1,7 +1,7 @@
 package com.juanjo.betvictor.task.Interfaces;
 
 import com.google.android.gms.maps.model.Marker;
-import com.juanjo.betvictor.task.Task.StreamTweetTask;
+import com.juanjo.betvictor.task.tasks.StreamTweetTask;
 import com.juanjo.betvictor.task.models.Tweet;
 
 /**
@@ -19,7 +19,7 @@ public interface IMainActivityPresenter {
 
     public void onStop();
 
-    public void init();
+    public void initProcess();
 
     public void startStreamTask(StreamTweetTask task);
 

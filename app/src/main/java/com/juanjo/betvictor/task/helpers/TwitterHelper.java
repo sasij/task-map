@@ -1,4 +1,4 @@
-package com.juanjo.betvictor.task.Util;
+package com.juanjo.betvictor.task.helpers;
 
 import twitter4j.conf.ConfigurationBuilder;
 

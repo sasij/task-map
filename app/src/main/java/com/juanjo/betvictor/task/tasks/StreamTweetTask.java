@@ -1,4 +1,4 @@
-package com.juanjo.betvictor.task.Task;
+package com.juanjo.betvictor.task.tasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.google.inject.Inject;
 import com.juanjo.betvictor.task.Interfaces.IMainActivityPresenter;
-import com.juanjo.betvictor.task.Util.TwitterHelper;
+import com.juanjo.betvictor.task.helpers.TwitterHelper;
 import com.juanjo.betvictor.task.listeners.TweetListener;
 import com.juanjo.betvictor.task.models.Tweet;
 

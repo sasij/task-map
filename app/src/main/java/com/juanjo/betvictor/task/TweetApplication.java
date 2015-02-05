@@ -21,6 +21,7 @@ public class TweetApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        //initialize event bus
         eventBus = new Bus(ThreadEnforcer.ANY);
     }
 }

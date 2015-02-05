@@ -7,8 +7,9 @@ import com.juanjo.betvictor.task.Interfaces.IMainActivityPresenter;
 import com.juanjo.betvictor.task.presenters.MainActivityPresenter;
 
 /**
- * Created by juanjo on 13/11/14.
+ * Created by juanjo on 05/02/15.
  */
+//Indicate to injector what class have to bind to what interface
 public class TweetModule extends AbstractModule {
     private Application application;
 

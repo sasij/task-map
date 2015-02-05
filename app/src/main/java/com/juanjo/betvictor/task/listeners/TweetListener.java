@@ -1,6 +1,6 @@
 package com.juanjo.betvictor.task.listeners;
 
-import com.juanjo.betvictor.task.Task.StreamTweetTask;
+import com.juanjo.betvictor.task.tasks.StreamTweetTask;
 import com.juanjo.betvictor.task.models.Tweet;
 
 import twitter4j.StallWarning;
@@ -20,10 +20,10 @@ public class TweetListener implements StatusListener {
 
     @Override
     public void onStatus(twitter4j.Status status) {
-        Tweet tweet = new Tweet(System.currentTimeMillis(), status.getGeoLocation().getLatitude(), status.getGeoLocation().getLongitude());
+        Tweet tweet = new Tweet(System.currentTimeMillis(),
+                status.getGeoLocation().getLatitude(),
+                status.getGeoLocation().getLongitude());
         task.handleTweet(tweet);
-
-        System.out.println("=>" + status.getText());
     }
 
     @Override

@@ -7,7 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.juanjo.betvictor.task.TweetApplication;
-import com.juanjo.betvictor.task.events.InternetConnectionChangedEvent;
+import com.juanjo.betvictor.task.models.events.InternetConnectionChangedEvent;
 
 /**
  * Created by juanjo on 05/02/15.
@@ -27,6 +27,7 @@ public class WifiReceiver extends BroadcastReceiver {
         boolean isConnected = (wifi != null && wifi.isConnectedOrConnecting())
                 || (mobile != null && mobile.isConnectedOrConnecting());
 
+        //Sending connection event through the bus
         InternetConnectionChangedEvent event = new InternetConnectionChangedEvent();
         event.setInternetConnection(isConnected);
         TweetApplication.getEventBus().post(event);

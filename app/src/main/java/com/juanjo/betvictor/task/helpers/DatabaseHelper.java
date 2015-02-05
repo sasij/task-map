@@ -1,4 +1,4 @@
-package com.juanjo.betvictor.task.Util;
+package com.juanjo.betvictor.task.helpers;
 
 import android.content.ContentValues;
 import android.content.Context;

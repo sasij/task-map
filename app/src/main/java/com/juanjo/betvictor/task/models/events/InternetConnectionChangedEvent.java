@@ -1,4 +1,4 @@
-package com.juanjo.betvictor.task.events;
+package com.juanjo.betvictor.task.models.events;
 
 /**
  * Created by juanjo on 15/01/15.

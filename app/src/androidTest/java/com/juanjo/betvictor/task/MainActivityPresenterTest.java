@@ -3,9 +3,9 @@ package com.juanjo.betvictor.task;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.juanjo.betvictor.task.Interfaces.IMainActivity;
-import com.juanjo.betvictor.task.Task.StreamTweetTask;
-import com.juanjo.betvictor.task.Util.ConnectionHelper;
-import com.juanjo.betvictor.task.Util.DatabaseHelper;
+import com.juanjo.betvictor.task.tasks.StreamTweetTask;
+import com.juanjo.betvictor.task.helpers.ConnectionHelper;
+import com.juanjo.betvictor.task.helpers.DatabaseHelper;
 import com.juanjo.betvictor.task.models.Tweet;
 import com.juanjo.betvictor.task.presenters.MainActivityPresenter;
 
@@ -68,7 +68,7 @@ public class MainActivityPresenterTest {
 
         verify(databaseHelperMock, times(1)).open();
         verify(viewMock, times(1)).loadMap();
-        verify(spyPresenter, times(1)).init();
+        verify(spyPresenter, times(1)).initProcess();
     }
 
     @Test
@@ -79,7 +79,7 @@ public class MainActivityPresenterTest {
         doReturn(true).when(spyPresenter).canInitTheTask();
 
         spyPresenter.onCreate(viewMock);
-        spyPresenter.init();
+        spyPresenter.initProcess();
 
         verify(viewMock, times(1)).showMessage(anyString());
         verify(viewMock, times(1)).cleanMap();
@@ -103,7 +103,7 @@ public class MainActivityPresenterTest {
         when(databaseHelperMock.getAllTweetsFromDatabase()).thenReturn(tweets);
 
         spyPresenter.onCreate(viewMock);
-        spyPresenter.init();
+        spyPresenter.initProcess();
 
         verify(viewMock, times(1)).showMessage("Without connection");
         verify(viewMock, times(2)).addPinToMap(any(Tweet.class));
