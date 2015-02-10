@@ -7,12 +7,12 @@ import com.google.inject.Inject;
 import com.juanjo.betvictor.task.Interfaces.IMainActivity;
 import com.juanjo.betvictor.task.Interfaces.IMainActivityPresenter;
 import com.juanjo.betvictor.task.R;
-import com.juanjo.betvictor.task.tasks.StreamTweetTask;
 import com.juanjo.betvictor.task.TweetApplication;
 import com.juanjo.betvictor.task.helpers.ConnectionHelper;
 import com.juanjo.betvictor.task.helpers.DatabaseHelper;
 import com.juanjo.betvictor.task.models.Tweet;
 import com.juanjo.betvictor.task.models.events.InternetConnectionChangedEvent;
+import com.juanjo.betvictor.task.tasks.StreamTweetTask;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;
@@ -48,6 +48,7 @@ public class MainActivityPresenter implements IMainActivityPresenter {
 
     @Override
     public void onStart() {
+        //register bus with the presenter
         TweetApplication.getEventBus().register(this);
     }
 
@@ -65,6 +66,7 @@ public class MainActivityPresenter implements IMainActivityPresenter {
             view.showMessage(withConnection);
             view.cleanMap();
             databaseHelper.removeAllTweetsFromDatabase();
+            //dependency inversion
             startStreamTask(new StreamTweetTask());
         } else {
             view.showMessage(withoutConnection);
@@ -86,6 +88,11 @@ public class MainActivityPresenter implements IMainActivityPresenter {
         streamTweetTask.execute();
     }
 
+    /**
+     * The task notifies to this method when a new tweet is received.
+     *
+     * @param tweet
+     */
     @Override
     public void showPinOnMap(Tweet tweet) {
         view.addPinToMap(tweet);

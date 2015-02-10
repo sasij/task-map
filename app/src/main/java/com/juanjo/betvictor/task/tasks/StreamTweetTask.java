@@ -2,7 +2,6 @@ package com.juanjo.betvictor.task.tasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.inject.Inject;
 import com.juanjo.betvictor.task.Interfaces.IMainActivityPresenter;
@@ -50,7 +49,6 @@ public class StreamTweetTask extends AsyncTask<Context, Tweet, Boolean> {
     }
 
     public void handleTweet(Tweet tweet) {
-        System.out.println("=> handle tweet");
         presenter.saveTweetOnDatabase(tweet);
         publishProgress(tweet);
     }
@@ -61,7 +59,6 @@ public class StreamTweetTask extends AsyncTask<Context, Tweet, Boolean> {
 
     protected void onProgressUpdate(Tweet... tweets) {
         super.onProgressUpdate(tweets);
-        Log.d("SampleTwitter", "Im in onProgressUpdate()");
         presenter.showPinOnMap(tweets[0]);
     }
 
